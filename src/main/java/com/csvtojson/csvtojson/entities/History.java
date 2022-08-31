@@ -1,15 +1,10 @@
 package com.csvtojson.csvtojson.entities;
 
-import jakarta.persistence.Entity;
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Entity
 public class History implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
     private Long account;
     private String state;
     private String type;
