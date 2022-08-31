@@ -3,6 +3,7 @@ package com.csvtojson.csvtojson.utils;
 import com.csvtojson.csvtojson.entities.History;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class CVSUtils {
 
     }
 
-    public static List<History> convertCVSToHistory(String filename, String coma){
+    public static List<History> convertCVSToHistory(String filename, String coma) {
         List<History> l = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -44,9 +45,14 @@ public class CVSUtils {
                 line =  br.readLine();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            return l;
+
+        } catch ( IOException e) {
+            if(e instanceof FileNotFoundException)
+                new FileNotFoundException("Error: Sorry! File " + filename + " Not Found!");
+            else
+                e.printStackTrace();
         }
-        return l;
+        return null;
     }
 }

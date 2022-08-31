@@ -24,7 +24,6 @@ import java.util.List;
         DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class CsvtojsonApplication implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(CsvtojsonApplication.class);
-
     @Value("${filename}")
     private String filename;
     @Value("${coma}")
@@ -44,8 +43,17 @@ public class CsvtojsonApplication implements ApplicationRunner {
             logger.info("argument: " + name + "=" + args.getOptionValues(name));
         }
 
-        List<History> l = CVSUtils.convertCVSToHistory(filename, coma);
-        System.out.println( JSONUtils.convertHistoryToJson(l) );
+        try {
+            List<History> l = CVSUtils.convertCVSToHistory(filename, coma);
+            if (l == null || l.size() == 0)
+                System.out.println("Warning: File " + filename + " empty or not found!");
+            else
+                System.out.println(JSONUtils.convertHistoryToJson(l));
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
