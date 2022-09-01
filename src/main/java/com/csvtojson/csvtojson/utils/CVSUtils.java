@@ -6,18 +6,20 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CVSUtils {
 
-    public CVSUtils() {
+    public CVSUtils() {}
 
-    }
-
-    public static List<History> convertCVSToHistory(String filename, String coma) {
+    public static List<History> convertCSVToHistories(String filename, String coma) {
         List<History> l = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -54,5 +56,20 @@ public class CVSUtils {
                 e.printStackTrace();
         }
         return null;
+    }
+
+    public static Set<String> listFilesUsingFileWalkAndVisitor(String dir) throws IOException {
+        Set<String> fileList = new HashSet<>();
+        Files.walkFileTree(Paths.get(dir), new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+                    throws IOException {
+                if (!Files.isDirectory(file)) {
+                    fileList.add(file.getFileName().toString());
+                }
+                return FileVisitResult.CONTINUE;
+            }
+        });
+        return fileList;
     }
 }

@@ -11,27 +11,25 @@ public class JSONUtils {
     public JSONUtils() {
     }
 
-    public static String convertHistoryToJson(List<History> histories){
-        JSONObject o = new JSONObject();
-        JSONArray a = new JSONArray();
-        for (History h : histories) {
-            JSONObject json = new JSONObject();
-            json.put("account",h.getAccount());
-            json.put("state",h.getState());
-            json.put("type",h.getType());
-            json.put("dateTime",h.getDateTime());
-            json.put("symbol",h.getSymbol());
-            json.put("magicNumber",h.getMagicNumber());
-            json.put("lots",h.getLots());
-            json.put("open",h.getOpen());
-            json.put("close",h.getClose());
-            json.put("profit",h.getProfit());
-            json.put("comment",h.getComment());
+    public static JSONArray convertHistoryToJson(List<History> histories){
+        JSONArray jHistories = new JSONArray();
+        for (History history : histories) {
+            JSONObject jHistory = new JSONObject();
+            jHistory.put("account",history.getAccount());
+            jHistory.put("state",history.getState());
+            jHistory.put("type",history.getType());
+            jHistory.put("dateTime",history.getDateTime());
+            jHistory.put("symbol",history.getSymbol());
+            jHistory.put("magicNumber",history.getMagicNumber());
+            jHistory.put("lots",history.getLots());
+            jHistory.put("open",history.getOpen());
+            jHistory.put("close",history.getClose());
+            jHistory.put("profit",history.getProfit());
+            jHistory.put("comment",history.getComment());
 
-            a.put(json);
+            jHistories.put(jHistory);
         }
-        o.put("histories",a);
 
-        return o.toString();
+        return jHistories;
     }
 }
