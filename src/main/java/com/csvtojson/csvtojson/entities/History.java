@@ -15,12 +15,11 @@ public class History implements Serializable {
     private Double open;
     private Double close;
     private Double profit;
-    private String comment;
 
     public History() {}
 
     public History(Long account, String state, String type, LocalDateTime dateTime, String symbol, Double magicNumber,
-                   Double lots, Double open, Double close, Double profit, String comment) {
+                   Double lots, Double open, Double close, Double profit) {
         super();
         this.account = account;
         this.state = state;
@@ -32,7 +31,6 @@ public class History implements Serializable {
         this.open = open;
         this.close = close;
         this.profit = profit;
-        this.comment = comment;
     }
 
     public Long getAccount() {
@@ -115,14 +113,6 @@ public class History implements Serializable {
         this.profit = profit;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     @Override
     public String toString() {
         return "History{" +
@@ -136,7 +126,6 @@ public class History implements Serializable {
                 ", open=" + open +
                 ", close=" + close +
                 ", profit=" + profit +
-                ", comment='" + comment + '\'' +
                 '}';
     }
 }

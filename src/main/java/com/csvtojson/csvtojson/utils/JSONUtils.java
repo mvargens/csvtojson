@@ -25,7 +25,6 @@ public class JSONUtils {
             jHistory.put("open",history.getOpen());
             jHistory.put("close",history.getClose());
             jHistory.put("profit",history.getProfit());
-            jHistory.put("comment",history.getComment());
 
             jHistories.put(jHistory);
         }

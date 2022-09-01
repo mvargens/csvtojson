@@ -1,6 +1,9 @@
 package com.csvtojson.csvtojson.utils;
 
+import com.csvtojson.csvtojson.CsvtojsonApplication;
 import com.csvtojson.csvtojson.entities.History;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -16,19 +19,23 @@ import java.util.List;
 import java.util.Set;
 
 public class CVSUtils {
-
+    private static final Logger logger = LoggerFactory.getLogger(CVSUtils.class);
     public CVSUtils() {}
 
     public static List<History> convertCSVToHistories(String filename, String coma) {
+
         List<History> l = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-
+            logger.info("Process filename: " + filename);
             String line = br.readLine();
             line = br.readLine();
             while(line != null){
 
                 String[] vect   = line.split(coma);
+                if(vect.length < 10) {
+                    logger.error("File Error: " + vect[3]);
+                }
                 Long account  = Long.parseLong(vect[0]);
                 String state    = vect[1];
                 String type     = vect[2];
@@ -39,10 +46,9 @@ public class CVSUtils {
                 Double open     = Double.parseDouble (vect[7].replace(".","").replace(",","."));
                 Double close    = Double.parseDouble (vect[8].replace(".","").replace(",","."));
                 Double profit   = Double.parseDouble (vect[9].replace(".","").replace(",","."));
-                String comment  = vect[10];
 
                 History h = new History(account, state, type, dateTime, symbol, magicNumber,
-                        lots, open, close, profit, comment);
+                        lots, open, close, profit);
                 l.add(h);
                 line =  br.readLine();
             }

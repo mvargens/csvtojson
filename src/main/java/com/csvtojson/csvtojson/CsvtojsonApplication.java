@@ -16,6 +16,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.*;
 
 
@@ -31,6 +35,8 @@ public class CsvtojsonApplication implements ApplicationRunner {
     private String pathname;
     @Value("${coma}")
     private String coma;
+    @Value("${jsonresult}")
+    private String jsonresult;
 
     public static void main(String[] args) {
         SpringApplication.run(CsvtojsonApplication.class, args);
@@ -47,7 +53,7 @@ public class CsvtojsonApplication implements ApplicationRunner {
         List<History> histories = new ArrayList<>();
         JSONObject json = new JSONObject();
 
-        try {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(jsonresult))){
             Set<String> fileList = CVSUtils.listFilesUsingFileWalkAndVisitor(pathname);
             if(fileList == null || fileList.isEmpty()) {
                 logger.error("Path empty");
@@ -66,8 +72,14 @@ public class CsvtojsonApplication implements ApplicationRunner {
             }
 
             json.put("history", JSONUtils.convertHistoryToJson(histories) );
+            logger.info("Total csv files read: " + histories.size());
             logger.info("file list: " + fileList);
-            logger. info(json.toString());
+            //logger. info(json.toString());
+
+            bw.write(json.toString());
+            logger.info("File " + jsonresult + " created!");
+
+
 
         }
         catch (Exception e){
