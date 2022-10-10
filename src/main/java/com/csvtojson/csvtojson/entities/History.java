@@ -1,10 +1,19 @@
 package com.csvtojson.csvtojson.entities;
 
+import jakarta.persistence.*;
+import org.springframework.context.annotation.Primary;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name="history")
 public class History implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long account;
     private String state;
     private String type;
@@ -32,6 +41,8 @@ public class History implements Serializable {
         this.close = close;
         this.profit = profit;
     }
+
+    public Long getId() { return id; }
 
     public Long getAccount() {
         return account;

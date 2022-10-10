@@ -1,11 +1,13 @@
 package com.csvtojson.csvtojson;
 
 import com.csvtojson.csvtojson.entities.History;
+import com.csvtojson.csvtojson.service.HistoryService;
 import com.csvtojson.csvtojson.utils.CVSUtils;
 import com.csvtojson.csvtojson.utils.JSONUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -37,6 +39,9 @@ public class CsvtojsonApplication implements ApplicationRunner {
     private String coma;
     @Value("${jsonresult}")
     private String jsonresult;
+
+    @Autowired
+    HistoryService historyService;
 
     public static void main(String[] args) {
         SpringApplication.run(CsvtojsonApplication.class, args);
@@ -72,6 +77,7 @@ public class CsvtojsonApplication implements ApplicationRunner {
             }
 
             json.put("history", JSONUtils.convertHistoryToJson(histories) );
+
             logger.info("Total csv files read: " + histories.size());
             logger.info("file list: " + fileList);
             //logger. info(json.toString());
@@ -79,7 +85,7 @@ public class CsvtojsonApplication implements ApplicationRunner {
             bw.write(json.toString());
             logger.info("File " + jsonresult + " created!");
 
-
+            historyService.save(histories);
 
         }
         catch (Exception e){
